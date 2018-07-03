@@ -9,6 +9,7 @@ import 'rxjs/add/observable/combineLatest';
 @Injectable()
 export class FirebaseService {
   users: Observable<any[]>;
+  assets: Observable<any[]>;
   videos : Observable<any[]>;
   UserAddress : string;
 
@@ -30,7 +31,7 @@ export class FirebaseService {
   }
 
   getContent(){
-    return this.videos = this.db.collection('Assets').valueChanges();
+    return this.videos = this.db.collection<Asset>('Assets').valueChanges();
   }
 
   addNewUser(user: User){

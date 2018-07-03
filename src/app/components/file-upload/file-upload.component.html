@@ -1,139 +1,143 @@
 <div class="container">
-    <div class="row">
-        <div *ngIf="uploadProgress" style="width:100%; text-align: center">
-            <p style="width:100%;"> video upload progress {{ uploadProgress | async | number : '1.0-2' }} % </p>
-            <div class="progress" style="width:100%;">
-                <div class="determinate" [style.width]="(uploadProgress | async) + '%'"></div>
-            </div>
-        </div>
-        <div class="col s12" id="setDealStepOne">
-            <p class="center grey-text"> 1 - {{ totalStes }}</p>
-            <h6 class="center">1. Select a file to upload:</h6>
-            <div class="setDealSection">
-                <ul class="collection">
-                    <li class="collection-item center">
-                        <label for="assetFileUpload">
-                            <i class="material-icons">
-                                cloud_upload
-                            </i>
-                        </label>
-                        <input type="file" (change)="(upload($event))" id="assetFileUpload" hidden />
-                    </li>
-                    <li class="collection-item" *ngIf="uploadState | async; let state">
-                        <button type="button" class="btn" (click)="task.pause()" [disabled]="state === 'paused'">
-                            <i class="material-icons">
-                                pause
-                            </i>
-                        </button>
-                        <!-- <button type="button" class="btn red" (click)="task.cancel()" [disabled]="state === 'running'">
+  <div class="row">
+    <div *ngIf="uploadProgress" style="width:100%; text-align: center">
+      <p style="width:100%;"> video upload progress {{ uploadProgress | async | number : '1.0-2' }} % </p>
+      <div class="progress" style="width:100%;">
+        <div class="determinate" [style.width]="(uploadProgress | async) + '%'"></div>
+      </div>
+    </div>
+    <div class="col s12" id="setDealStepOne">
+      <p class="center grey-text"> 1 - {{ totalStes }}</p>
+      <h6 class="center">1. Select a file to upload:</h6>
+      <div class="setDealSection">
+        <ul class="collection">
+          <li class="collection-item center">
+            <label for="assetFileUpload">
+              <i class="material-icons">
+                cloud_upload
+              </i>
+            </label>
+            <input type="file" (change)="(upload($event))" id="assetFileUpload" hidden />
+          </li>
+          <li class="collection-item" *ngIf="uploadState | async; let state">
+            <button type="button" class="btn" (click)="task.pause()" [disabled]="state === 'paused'">
+              <i class="material-icons">
+                pause
+              </i>
+            </button>
+            <!-- <button type="button" class="btn red" (click)="task.cancel()" [disabled]="state === 'running'">
                             <i class="material-icons">
                                 close
                             </i>
                         </button> -->
-                        <button type="button" class="btn blue" (click)="task.resume()" [disabled]="state === 'running'">
-                            <i class="material-icons">
-                                play_circle_filled
-                            </i>
-                        </button>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-
-        <div class="col s12 hide" id="setDealStepTwo">
-            <p class="center grey-text"> 2 - {{ totalStes }}</p>
-            <h6 class="center">2. Select the user you'll make the deal with </h6>
-            <div class="setDealSection center">
-                <form (ngSubmit)="findUserByAddress()" id="serchUserByIdForm">
-                    <div class="input-field">
-                        <input id="userToDealWithEmail" type="text" class="validate" name="userToDealWithEmail" [(ngModel)]="userToDealWithEmail">
-                        <label for="userToDealWithEmail">User email address</label>
-                    </div>
-                    <button type="submit" class="btn">
-                        <i class="material-icons right">send</i> send
-                    </button>
-                </form>
-
-                <div *ngIf="userTodealWith">
-                    <div *ngIf="userTodealWith.length > 0 ; else noUserFound">
-                        <div class="row">
-                            <div class="col s12">
-                                <ul class="collection" *ngFor="let userDeal of userTodealWith">
-                                    <li class="collection-item avatar" (click)="selectUserToDealWith(userDeal)">
-                                        <img [src]="userDeal.profilePicture" alt="" class="circle">
-                                        <span class="title">{{ userDeal.name }} {{ userDeal.lastname }} </span>
-                                        <p class="truncate"> {{ userDeal.address | truncateEthereumAddress }} </p>
-                                        <p> {{userDeal.email}}</p>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <ng-template #noUserFound>
-                        <h6>No user was found</h6>
-                    </ng-template>
-                    <button class="btn-floating btn-large waves-effect waves-light red" (click)="resetForm()">
-                        <i class="material-icons">close</i>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="col s12  hide" id="setDealStepThree">
-            <p class="center grey-text"> 3 - {{ totalStes }}</p>
-            <h6 class="center">3. finalize the agreement </h6>
-            <br>
-
-            <div class="row">
-                <!-- expert Section -->
-                <div class="col s6 center">
-                    <div *ngIf="currentUserInfo">
-                        <div *ngFor="let info of currentUserInfo">
-                            <img [src]="info.profilePicture" alt="" class="circle responsive-img" width="250">
-                            <p class="center truncate"> {{ info.name }} {{ info.lastname }} </p>
-                            <p class="center truncate"> {{ info.email}}</p>
-                            <div class="input-field center">
-                                <input id="expertPercentage" type="number" class="validate" name="expertPercentage" [(ngModel)]="expertPercentage">
-                                <label for="expertPercentage"> percentage</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- User Section -->
-                <div class="col s6 center">
-                    <div *ngIf="userToDealStep3">
-                        <img [src]="userToDealStep3.profilePicture" alt="" class="circle responsive-img" width="250">
-                        <p class="center truncate"> {{ userToDealStep3.name }} {{ userToDealStep3.lastname }} </p>
-                        <p class="center truncate"> {{ userToDealStep3.email}}</p>
-                        <div class="input-field center">
-                            <input id="userPercentage" type="number" class="validate" name="userPercentage" [(ngModel)]="userPercentage">
-                            <label for="userPercentage"> percentage</label>
-                        </div>
-                    </div>
-                </div>
-                <!--Time to make a real deal son-->
-                <div class="col s12 m6 offset-m3 center">
-                    <form (ngSubmit)="sendAssetToDB(asset)">
-                        <div class="input-field">
-                            <textarea id="assetDescription" class="materialize-textarea" [(ngModel)]="asset.assetDescription" name="description" ></textarea>
-                            <label for="assetDescription">Description</label>
-                        </div>
-                        <div class="input-field">
-                            <input id="assetPrice" type="number" class="validate" [(ngModel)]="asset.price" name="price">
-                            <label for="assetPrice"> Price</label>
-                        </div>
-                        <div class="input-field">
-                            <select [(ngModel)]="asset.currency" name="currency">
-                                <option value="no-currency-selected" disabled selected>Select currency</option>
-                                <option value="eth">eth</option>
-                                <option value="wei">wei</option>
-                            </select>
-                        </div>
-                        <button type="submit" [disabled]="!finalizeDeal" class="btn">Make the deal</button>
-                    </form>
-                </div>
-            </div>
-        </div>
+            <button type="button" class="btn blue" (click)="task.resume()" [disabled]="state === 'running'">
+              <i class="material-icons">
+                play_circle_filled
+              </i>
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
+
+
+    <div class="col s12 hide" id="setDealStepTwo">
+      <p class="center grey-text"> 2 - {{ totalStes }}</p>
+      <h6 class="center">2. Select the user you'll make the deal with </h6>
+      <div class="setDealSection center">
+        <form (ngSubmit)="findUserByAddress()" id="serchUserByIdForm">
+          <div class="input-field">
+            <input id="userToDealWithEmail" type="text" class="validate" name="userToDealWithEmail" [(ngModel)]="userToDealWithEmail">
+            <label for="userToDealWithEmail">User email address</label>
+          </div>
+          <button type="submit" class="btn">
+            <i class="material-icons right">send</i> send
+          </button>
+        </form>
+
+        <div *ngIf="userTodealWith">
+          <div *ngIf="userTodealWith.length > 0 ; else noUserFound">
+            <div class="row">
+              <div class="col s12">
+                <ul class="collection" *ngFor="let userDeal of userTodealWith">
+                  <li class="collection-item avatar" (click)="selectUserToDealWith(userDeal)">
+                    <img [src]="userDeal.profilePicture" alt="" class="circle">
+                    <span class="title">{{ userDeal.name }} {{ userDeal.lastname }} </span>
+                    <p class="truncate"> {{ userDeal.address | truncateEthereumAddress }} </p>
+                    <p> {{userDeal.email}}</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <ng-template #noUserFound>
+            <h6>No user was found</h6>
+          </ng-template>
+          <button class="btn-floating btn-large waves-effect waves-light red" (click)="resetForm()">
+            <i class="material-icons">close</i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col s12  hide" id="setDealStepThree">
+      <p class="center grey-text"> 3 - {{ totalStes }}</p>
+      <h6 class="center">3. finalize the agreement </h6>
+      <br>
+
+      <div class="row">
+        <!-- expert Section -->
+        <div class="col s6 center">
+          <div *ngIf="currentUserInfo">
+            <div *ngFor="let info of currentUserInfo">
+              <img [src]="info.profilePicture" alt="" class="circle responsive-img" width="250">
+              <p class="center truncate"> {{ info.name }} {{ info.lastname }} </p>
+              <p class="center truncate"> {{ info.email}}</p>
+              <div class="input-field center">
+                <input id="expertPercentage" type="number" class="validate" name="expertPercentage" [(ngModel)]="expertPercentage">
+                <label for="expertPercentage"> percentage</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- User Section -->
+        <div class="col s6 center">
+          <div *ngIf="userToDealStep3">
+            <img [src]="userToDealStep3.profilePicture" alt="" class="circle responsive-img" width="250">
+            <p class="center truncate"> {{ userToDealStep3.name }} {{ userToDealStep3.lastname }} </p>
+            <p class="center truncate"> {{ userToDealStep3.email}}</p>
+            <div class="input-field center">
+              <input id="userPercentage" type="number" class="validate" name="userPercentage" [(ngModel)]="userPercentage">
+              <label for="userPercentage"> percentage</label>
+            </div>
+          </div>
+        </div>
+        <!--Time to make a real deal son-->
+        <div class="col s12 m6 offset-m3 center">
+          <form (ngSubmit)="sendAssetToDB(asset)">
+            <div class="input-field">
+              <textarea id="assetTitle" class="materialize-textarea" [(ngModel)]="asset.title" name="title"></textarea>
+              <label for="assetTitle">Title</label>
+            </div>
+            <div class="input-field">
+              <textarea id="assetDescription" class="materialize-textarea" [(ngModel)]="asset.assetDescription" name="description"></textarea>
+              <label for="assetDescription">Description</label>
+            </div>
+            <div class="input-field">
+              <input id="assetPrice" type="number" class="validate" [(ngModel)]="asset.price" name="price">
+              <label for="assetPrice"> Price</label>
+            </div>
+            <div class="input-field">
+              <select [(ngModel)]="asset.currency" name="currency">
+                <option value="no-currency-selected" disabled selected>Select currency</option>
+                <option value="eth">eth</option>
+                <option value="wei">wei</option>
+              </select>
+            </div>
+            <button type="submit" [disabled]="!finalizeDeal" class="btn">Make the deal</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

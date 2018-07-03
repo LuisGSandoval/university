@@ -19,12 +19,12 @@ export class VideoListComponent implements OnInit {
   showDescription: boolean = false;
   constructor(private router: Router, private fireStore: FirebaseService) { }
 
-  asset : Observable<any[]>;
+  assetsListShowCase : Asset[];
 
   ngOnInit() {
 
     this.fireStore.getContent().subscribe(data => {
-      this.asset =  data
+      this.assetsListShowCase = data
     });
 
     let modalOption = new Object();

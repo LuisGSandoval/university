@@ -7,5 +7,7 @@ export class Asset {
     userPercentage : number;
     price: number;
     currency: string;
+    title : string;
     assetDescription : string;
+    documentType : string;
 }

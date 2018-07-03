@@ -27,7 +27,7 @@ import { SliderComponent } from './components/home/slider/slider.component';
 import { VideoComponent } from './components/video/video.component';
 import { VideoSearchComponent } from './components/video-search/video-search.component';
 import { RegisterComponent } from './components/register/register.component';
-import { CreateAssetComponent } from './components/create-asset/create-asset.component';
+
 import { VideoListComponent } from './components/home/video-list/video-list.component';
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
 import { TruncateEthereumAddressPipe } from './custompipes/truncate-ethereum-address.pipe';
@@ -45,7 +45,7 @@ import { TruncateEthereumAddressPipe } from './custompipes/truncate-ethereum-add
     VideoComponent,
     VideoSearchComponent,
     RegisterComponent,
-    CreateAssetComponent,
+    
     VideoListComponent,
     
     FileUploadComponent,

@@ -27,7 +27,8 @@ export class FileUploadComponent implements OnInit {
   uploadProgress: Observable<number>;
 
   uploadState: Observable<string>;
-  fileNameId: string
+  fileNameId: string;
+  fileExtension : string;
 
 
   finalizeDeal: boolean = false
@@ -54,7 +55,9 @@ export class FileUploadComponent implements OnInit {
     userPercentage: null,
     price: null,
     currency: '',
-    assetDescription : ''
+    assetDescription : '',
+    title : '',
+    documentType: ''
   }
 
   constructor(private router: Router, private afStorage: AngularFireStorage, private fireService: FirebaseService, private contractServices: SmartContractService) { }
@@ -67,7 +70,11 @@ export class FileUploadComponent implements OnInit {
 
   upload(event) {
     const id: string = new Date().getTime().toString();
+
     this.fileNameId = `assets/${id}_${event.target.files[0].name}`
+    this.fileExtension = this.fileNameId.split('.').pop();
+    console.log(this.fileExtension)
+
     this.ref = this.afStorage.ref(this.fileNameId);
     this.task = this.ref.put(event.target.files[0])
     this.videoHashsha256 = sha256(this.fileNameId);
@@ -153,6 +160,7 @@ export class FileUploadComponent implements OnInit {
     this.asset.userAddress = this.userToDealWithAddress;
     this.asset.userPercentage = this.userPercentage;
     this.asset.expertPercentage = this.expertPercentage;
+    this.asset.documentType = this.fileExtension;
 
     if (this.asset.price == null) {
       M.toast({ html: "Please assign a price to the content" })

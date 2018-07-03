@@ -1,59 +1,75 @@
-<div class="container">
-  <div class="row">
-    <div class="col s12 m6 l4">
-
+<div class="container" *ngIf="assetsListShowCase; else noContentWasFound">
+  <div class="row" >
+    <div class="col s12 m6 l4" *ngFor="let asset of assetsListShowCase">
 
       <div class="card round-corner-20px hoverable">
-        <div class="card-image ">
-          <img src="assets/images/videoPlayer.png" alt="" class="round-corner-top-20px">
+        <div class="card-image" *ngIf="asset.documentType == mp4">
+          <video width="320" height="240">
+            <source [src]="asset.assetURL" type="video/mp4">
+          </video>
+        </div>
+        <div class="card-image" *ngIf="asset.documentType == 'png' || asset.documentType == 'jpg' || asset.documentType == 'jpeg'">
+          <img [src]="asset.assetURL" alt="asset.assetDescription" class="round-corner-top-20px">
         </div>
         <div class="card-content round-corner-20px">
-          <span class="card-title activator grey-text">Blockchain
-            <a href="#modalVideoDescription" class=" modal-trigger"> <i class="material-icons right">info</i> </a>
+          <span class="card-title activator grey-text">
+            {{ asset.title }}
+            <a href="#modalVideoDescription" class=" modal-trigger">
+              <i class="material-icons right">info</i>
+            </a>
           </span>
-          <p>Discover easily what blockchain is by watching this great video.</p>
+          <p> {{ asset.assetDescription }}</p>
         </div>
       </div>
-
 
     </div>
   </div>
 </div>
 
-<div id="modalVideoDescription" class="modal transparent full-width">
+<ng-template #noContentWasFound>
+  <div class="container">
+    <div class="row">
+      <h6>No content was found</h6>
+    </div>
+  </div>
+</ng-template>
+
+<!-- 
+<div id="modalVideoDescription" class="modal transparent full-width" *ngIf="assetsListShowCase">
   <div class="row">
     <div class="col s12 m6">
-        <div class="modal-content teal white-text" style="height:80vh;">
-            <video class="responsive-video" controls id="previewVideo">
-              <source src="./assets/videos/BC-Video.mp4" type="video/mp4">
-            </video>
-            <div class="row">
-              <div class="col s12">
-                  <img src="./assets/images/expert-photo.jpg" class="circle responsive-img" width="70">
-              </div>
-             
-              <div class="col s12 ">
-                <h4>Solutions</h4>
-                <p>¿Qué es blockchain para doomies? </p>
-                <p>¿Qué es un ledger? </p>
-                <p>¿Cómo puedo asesgurar mis datos?</p>
-                <p>¿Qué es un contrato inteligente?</p>
-              </div>
-            </div>
-
-
-            
+      <div class="modal-content teal white-text" style="height:80vh;">
+        <video class="responsive-video" controls id="previewVideo">
+          <source src="./assets/videos/BC-Video.mp4" type="video/mp4">
+        </video>
+        <div class="row">
+          <div class="col s12">
+            <img src="./assets/images/expert-photo.jpg" class="circle responsive-img" width="70">
           </div>
+
+          <div class="col s12 ">
+            <h4>Solutions</h4>
+            <p>¿Qué es blockchain para dummies? </p>
+            <p>¿Qué es un ledger? </p>
+            <p>¿Cómo puedo asesgurar mis datos?</p>
+            <p>¿Qué es un contrato inteligente?</p>
+          </div>
+        </div>
+
+
+
+      </div>
     </div>
 
     <div class="col s12 m6 valign-wrapper " style="height:80vh; display: flex; justify-content: center; align-items: middle; flex-direction: column;">
-      
-      
-      
-      <h1 class="white-text"> {{ VideoPriceToSell | currency : "eth "}}</h1> <br>
+
+
+
+      <h1 class="white-text"> {{ VideoPriceToSell | currency : "eth "}}</h1>
+      <br>
       <a class="modal-close waves-effect waves-green btn" (click)="BuyVideo()">Buy</a>
-      <!-- <button class="btn modal-close" (click)="BuyVideo();"> Buy</button> -->
+      <button class="btn modal-close" (click)="BuyVideo();"> Buy</button>
     </div>
   </div>
-    
-  </div>
+
+</div> -->
