@@ -114,11 +114,12 @@
         </div>
         <!--Time to make a real deal son-->
         <div class="col s12 m6 offset-m3 center">
-          <form (ngSubmit)="sendAssetToDB(asset)">
+          <form (ngSubmit)="sendAssetToDB()">
             <div class="input-field">
               <textarea id="assetTitle" class="materialize-textarea" [(ngModel)]="asset.title" name="title"></textarea>
               <label for="assetTitle">Title</label>
             </div>
+
             <div class="input-field">
               <textarea id="assetDescription" class="materialize-textarea" [(ngModel)]="asset.assetDescription" name="description"></textarea>
               <label for="assetDescription">Description</label>

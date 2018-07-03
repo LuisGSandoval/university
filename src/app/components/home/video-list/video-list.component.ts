@@ -20,6 +20,8 @@ export class VideoListComponent implements OnInit {
   constructor(private router: Router, private fireStore: FirebaseService) { }
 
   assetsListShowCase : Asset[];
+  
+  assetsSelectedToView:any;
 
   ngOnInit() {
 
@@ -32,15 +34,34 @@ export class VideoListComponent implements OnInit {
     this.modalInstances = M.Modal.init(modalElems, modalOption);
     this.modalInstanceEdit = M.Modal.getInstance(modalElems);
 
-    let previewVideo = document.getElementById('previewVideo') as HTMLVideoElement;
+    this.modalInstanceEdit.onCloseStart()
+  }
 
-    previewVideo.onplay = function () {
-      setTimeout(() => {
-        previewVideo.pause();
-        previewVideo.currentTime = 0;
-        previewVideo.load();
-      }, 6000);
-    };
+
+
+  selectAssetToView(asset : Asset){
+    this.assetsSelectedToView = '';
+    this.assetsSelectedToView = asset;
+    
+    
+    
+    let modalViewContentSelectedElement = document.querySelector('#modalVideoDescription')
+    var instance = M.Modal.getInstance(modalViewContentSelectedElement);
+    instance.open();
+    
+    
+    
+    setTimeout(function(){
+      let previewVideo = document.getElementById('previewVideo') as HTMLVideoElement;
+      previewVideo.onplay = function () {
+        setTimeout(() => {
+          previewVideo.pause();
+          previewVideo.currentTime = 0;
+          previewVideo.load();
+        }, 6000);
+      };
+    }, 1000)
+    
   }
 
   BuyVideo() {

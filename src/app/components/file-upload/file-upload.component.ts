@@ -45,6 +45,7 @@ export class FileUploadComponent implements OnInit {
   userToDealWithAddress: string;
   videoHashsha256: string;
   userToDealWithEmail: string;
+  uploaderImageLink: string;
 
   asset: Asset = {
     assetURL: '',
@@ -57,7 +58,8 @@ export class FileUploadComponent implements OnInit {
     currency: '',
     assetDescription : '',
     title : '',
-    documentType: ''
+    documentType: '',
+    assetUploaderPicture : ''
   }
 
   constructor(private router: Router, private afStorage: AngularFireStorage, private fireService: FirebaseService, private contractServices: SmartContractService) { }
@@ -73,7 +75,7 @@ export class FileUploadComponent implements OnInit {
 
     this.fileNameId = `assets/${id}_${event.target.files[0].name}`
     this.fileExtension = this.fileNameId.split('.').pop();
-    console.log(this.fileExtension)
+    
 
     this.ref = this.afStorage.ref(this.fileNameId);
     this.task = this.ref.put(event.target.files[0])
@@ -143,6 +145,11 @@ export class FileUploadComponent implements OnInit {
         this.fireService.getUserAddress(account)
         this.fireService.getUserInfo().subscribe(queriedItems => {
           this.currentUserInfo = queriedItems;
+
+          queriedItems.forEach(data => {
+            console.log(data['profilePicture'])
+            this.uploaderImageLink = data['profilePicture']
+          })
         });
       });
 
@@ -161,6 +168,7 @@ export class FileUploadComponent implements OnInit {
     this.asset.userPercentage = this.userPercentage;
     this.asset.expertPercentage = this.expertPercentage;
     this.asset.documentType = this.fileExtension;
+    this.asset.assetUploaderPicture = this.uploaderImageLink;
 
     if (this.asset.price == null) {
       M.toast({ html: "Please assign a price to the content" })
